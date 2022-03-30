@@ -5,7 +5,7 @@ import os
 import random
 
 class IMSCheckBot:
-    def __init__(self, id, pw):
+    def __init__(self, id, pw, ims_nums):
         # driver setting
         self.options = Options()
         self.options.add_argument("headless")
@@ -13,42 +13,43 @@ class IMSCheckBot:
         self.driver = webdriver.Chrome(executable_path="./chromedriver.exe", chrome_options=self.options)
         self.url = "https://ims.tmaxsoft.com/"
         self.driver.get(self.url)
+        self.ims_nums = ims_nums
         time.sleep(3)
 
         # user info
         self.id = id
         self.pw = pw
 
-        # login id, pw input field Xpath
-        self.id_path = '/html/body/form/table/tbody/tr/td/table/tbody/tr[2]/td[1]/table/tbody/tr/td[2]/table/tbody/tr/td[2]/table/tbody/tr/td[1]/input'
-        self.pw_path = '/html/body/form/table/tbody/tr/td/table/tbody/tr[2]/td[1]/table/tbody/tr/td[2]/table/tbody/tr/td[2]/table/tbody/tr/td[2]/input'
     
     def waiting_time(self):
         return random.randint(1, 3) / 10
         
 
     def log_in(self):
-         id_input = self.driver.find_element_by_xpath(self.id_path)
-         pw_input = self.driver.find_element_by_xpath(self.pw_path)
-         login_button = self.driver.find_element_by_xpath('/html/body/form/table/tbody/tr/td/table/tbody/tr[2]/td[1]/table/tbody/tr/td[2]/table/tbody/tr/td[2]/table/tbody/tr/td[3]/input')
+        # login id, pw input field Xpath
+        self.id_path = '/html/body/form/table/tbody/tr/td/table/tbody/tr[2]/td[1]/table/tbody/tr/td[2]/table/tbody/tr/td[2]/table/tbody/tr/td[1]/input'
+        self.pw_path = '/html/body/form/table/tbody/tr/td/table/tbody/tr[2]/td[1]/table/tbody/tr/td[2]/table/tbody/tr/td[2]/table/tbody/tr/td[2]/input'
+        id_input = self.driver.find_element_by_xpath(self.id_path)
+        pw_input = self.driver.find_element_by_xpath(self.pw_path)
+        login_button = self.driver.find_element_by_xpath('/html/body/form/table/tbody/tr/td/table/tbody/tr[2]/td[1]/table/tbody/tr/td[2]/table/tbody/tr/td[2]/table/tbody/tr/td[3]/input')
 
-         # id input
-         id_input.click()
-         time.sleep(self.waiting_time())
-         id_input.clear()
-         time.sleep(self.waiting_time())
-         id_input.send_keys(self.id)
-         time.sleep(1)
+        # id input
+        id_input.click()
+        time.sleep(self.waiting_time())
+        id_input.clear()
+        time.sleep(self.waiting_time())
+        id_input.send_keys(self.id)
+        time.sleep(1)
+        
+        # pw input
+        pw_input.click()
+        time.sleep(self.waiting_time())
+        pw_input.clear()
+        time.sleep(self.waiting_time())
+        pw_input.send_keys(self.pw)
+        time.sleep(0.5)
 
-         # pw input
-         pw_input.click()
-         time.sleep(self.waiting_time())
-         pw_input.clear()
-         time.sleep(self.waiting_time())
-         pw_input.send_keys(self.pw)
-         time.sleep(0.5)
-
-         login_button.click()
+        login_button.click()
 
     def find_ims(self):
         ims_num_input_path = '/html/body/div[2]/table/tbody/tr/td[1]/table/tbody/tr/td/table/tbody/tr[1]/td/a'
@@ -60,14 +61,15 @@ class IMSCheckBot:
         try:
             self.log_in()
         except Exception as e:
-            print("**Error at login function**")
-            print(e)
-            print("***************************")
+            print(f"""**Error at login function**
+            {e}
+            ***************************""")
+            exit(0)
         
         try:
             self.find_ims()
         except Exception as e:
-            print("**Error at finding IMS**")
-            print(e)
-            print("***************************")
-        
+            print(f"""**Error at finding IMS**
+            {e}
+            ***************************""")
+            exit(0)
