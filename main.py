@@ -1,16 +1,7 @@
 import checkBot
 import getpass
-# immport pandas as pd ??
-
-def add_IMS(ims_nums, num):
-    ims_nums.append(num)
-
-def del_IMS(ims_nums, num):
-    ims_nums.remove(num)
 
 def main():
-    ims_nums = [279789] # 판다스로 관리?
-
     while True:
         mod = input("""which mode?
 ----------------------------
