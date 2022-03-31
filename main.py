@@ -1,32 +1,43 @@
 import checkBot
-import getpass
+import dataProcess
+import checkBot
 
 def main():
+    data_control = dataProcess.DataControl()
+    ims_check_bot = checkBot.IMSCheckBot()
+
     while True:
         mod = input("""which mode?
 ----------------------------
-> Check current IMS  :   \'c\'
-> Search IMS         :   \'s\'
-> Add IMS            :   \'a\'
-> Delete IMS         :   \'d\'
-> Exit               :   \'e\'
+> Check current IMS-s  :   \'c\'
+> Check updated IMS-s  :   \'u\'
+> Add IMS              :   \'a\'
+> Delete IMS           :   \'d\'
+> Exit                 :   \'e\'
 ----------------------------
 => """)
 
-        if mod == 'e':
+        if mod == 'c':
+            data_control.data_disp()
+
+        elif mod == 's':
+            ims_check_bot.log_in()
+
+        elif mod == 'e':
             print("System: Exiting the program")
             break
 
-        elif mod == 's':
-            id = input("id: ")
-            pw = getpass.getpass("pw: ")
-
-            # execute macro
-            IMSCheckBot = checkBot.IMSCheckBot(id, pw, ims_nums)
-            IMSCheckBot.run_program()
-    
         elif mod == 'a':
-            print('a')
+            temp = 1
+            issue_num = input('IMS number: ')
+            if len(int(issue_num)) != 6 or type(temp) != type(int(issue_num)):
+                print('invalid number')
+                break
+            else:
+                issue_about = input('What is this issue about?: ')
+
+            print('Add')
+            print()
     
         elif mod == 'd':
             print('d')
