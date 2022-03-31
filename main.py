@@ -5,14 +5,15 @@ import checkBot
 def main():
     data_control = dataProcess.DataControl()
     ims_check_bot = checkBot.IMSCheckBot()
+    ims_check_bot.log_in()
 
-    while True:
+    while True:                ### must code input_timeout
         mod = input("""which mode?
 ----------------------------
 > Check current IMS-s  :   \'c\'
 > Check updated IMS-s  :   \'u\'
 > Add IMS              :   \'a\'
-> Delete IMS           :   \'d\'
+> Remove IMS           :   \'r\'
 > Exit                 :   \'e\'
 ----------------------------
 => """)
@@ -24,30 +25,31 @@ def main():
             ims_check_bot.log_in()
 
         elif mod == 'e':
-            print("System: Exiting the program")
+            print("\nSystem: Exiting the program")
             break
 
         elif mod == 'a':
-            temp = 1
-            issue_num = input('IMS number: ')
-            if len(int(issue_num)) != 6 or type(temp) != type(int(issue_num)):
-                print('invalid number')
-                break
+            num = input('IMS number: ')
+            ims_num, ims_title, ims_date = ims_check_bot.get_ims_info(num)
+            if ims_num == 0:
+                continue
             else:
-                issue_about = input('What is this issue about?: ')
-
-            print('Add')
-            print()
+                data_control.data_add(ims_num, ims_title, ims_date)
     
-        elif mod == 'd':
-            print('d')
+        elif mod == 'r':
+            num = input('IMS number: ')
+            data_control.data_del(num)
         
         else:
-            print('No valid input. Try again.')
+            print('\nSystem: No valid input. Try again.')
 
 if __name__ == "__main__":
     try:
         main()
+    except KeyboardInterrupt:
+        print('\nSystem: Exiting the program')
+        exit(0)
     except Exception as e:
+        print('\nSystem: Error occured.')
         print(e)
         exit(0)
