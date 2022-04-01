@@ -6,6 +6,10 @@ import time
 import random
 import getpass
 
+from bs4 import BeautifulSoup
+
+
+
 class IMSCheckBot:
     def __init__(self):
         # driver setting
@@ -51,37 +55,54 @@ class IMSCheckBot:
 
         login_button.click()
 
+    # def get_ims_info(self, num):
+    #     url = f'https://ims.tmaxsoft.com/tody/ims/issue/issueView.do?issueId={num}'
+
+    #     # check HTTP status
+    #     # html = requests.get(url, headers=self.header)
+    #     # print(f'*********{html.status_code}********')
+
+    #     # if html.status_code != 200:
+    #     #     print(f'Page error. Error code {html.status_code}')
+    #     #     return
+    #     self.driver.get(url)
+    #     time.sleep(2)
+
+    #     try:
+    #         error_check_path = '/html/body/table/tbody/tr/td/table/tbody/tr[2]/td/table/tbody/tr/td[2]/pre/span'
+    #         if self.driver.find_element(by=By.XPATH, value=error_check_path).text:
+    #             print('\nSystem: Invalid IMS number')
+    #             return 0, 0, 0
+    #     except:
+    #         pass
+
+    #     try:
+    #     # ims_title
+    #         ims_title_path = '/html/body/div[2]/table/tbody/tr/td[2]/table/tbody/tr[2]/td/table[2]/tbody/tr/td/table/tbody/tr/td[2]'
+    #         ims_title = self.driver.find_element(by=By.XPATH, value=ims_title_path).text.strip()
+
+    #     # date check
+    #         ims_date_path = '/html/body/div[2]/table/tbody/tr/td[2]/table/tbody/tr[2]/td/table[3]/tbody/tr/td/table/tbody/tr[2]/td/table/tbody/tr/td[2]/table/tbody/tr/td/table[2]/tbody/tr/td[1]/table/tbody/tr[20]/td[2]'
+
+    #         ims_date = self.driver.find_element(by=By.XPATH, value=ims_date_path).text.strip()
+    #         return int(num), ims_date, ims_title
+
+    #     except:
+    #         pass
+    
     def get_ims_info(self, num):
         url = f'https://ims.tmaxsoft.com/tody/ims/issue/issueView.do?issueId={num}'
-
-        # check HTTP status
-        # html = requests.get(url, headers=self.header)
-        # print(f'*********{html.status_code}********')
-
-        # if html.status_code != 200:
-        #     print(f'Page error. Error code {html.status_code}')
-        #     return
         self.driver.get(url)
-        time.sleep(2)
+        html = self.driver.page_source
+        soup = BeautifulSoup(html, 'html.parser')
+        com_list = soup.find_all('span', {'class': 'link2'})
 
-        try:
-            error_check_path = '/html/body/table/tbody/tr/td/table/tbody/tr[2]/td/table/tbody/tr/td[2]/pre/span'
-            if self.driver.find_element(by=By.XPATH, value=error_check_path).text:
-                print('\nSystem: Invalid IMS number')
-                return 0, 0, 0
-        except:
-            pass
+        temp = []
+        for i in com_list:
+            temp.append(i.get_text().strip().replace('\t','').replace('\n','').replace('\xa0',''))
+        print(temp)
+        
 
-        try:
-        # ims_title
-            ims_title_path = '/html/body/div[2]/table/tbody/tr/td[2]/table/tbody/tr[2]/td/table[2]/tbody/tr/td/table/tbody/tr/td[2]'
-            ims_title = self.driver.find_element(by=By.XPATH, value=ims_title_path).text.strip()
-
-        # date check
-            ims_date_path = '/html/body/div[2]/table/tbody/tr/td[2]/table/tbody/tr[2]/td/table[3]/tbody/tr/td/table/tbody/tr[2]/td/table/tbody/tr/td[2]/table/tbody/tr/td/table[2]/tbody/tr/td[1]/table/tbody/tr[20]/td[2]'
-
-            ims_date = self.driver.find_element(by=By.XPATH, value=ims_date_path).text.strip()
-            return int(num), ims_date, ims_title
-
-        except:
-            pass
+ims_check_bot = IMSCheckBot()
+ims_check_bot.log_in()
+ims_check_bot.get_info_test(231526)

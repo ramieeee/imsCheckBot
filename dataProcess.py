@@ -51,6 +51,7 @@ class DataControl:
                 "Title" : title
         }
         df = df.append(data, ignore_index=True)
+        
         df.to_csv('./data_list.csv')
         print('\nSystem: Data successfully added')
     
