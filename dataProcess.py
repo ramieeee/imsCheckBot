@@ -7,20 +7,37 @@ class DataControl:
         if 'data_list.csv' not in os.listdir('./'):
             print('\nSystem: No data_list.csv file in dir. Creating new file')
             data = {'IMS_num' : [],
-                    'Title' : [],
                     'Date' : [],
-                    'Update_check' : []
+                    'Title' : []
             }
             df = pd.DataFrame(data)
             df.to_csv('./data_list.csv')
             print('\nSystem: Successfully created data_list.csv')
     
-    def data_disp(self):
+    def data_disp_all(self):
         df = pd.read_csv('./data_list.csv', index_col=0) # index_col eliminates unnamed: 0 column
         print()
         print(df)
     
-    def data_add(self, num, title, date):
+    def data_disp_single(self, num):
+        if num == '':
+            print('\nSystem: Empty input')
+            return
+
+        df = pd.read_csv('./data_list.csv', index_col=0)
+
+        # check if IMS num exists
+        if int(num) not in list(df['IMS_num']):
+            print('\nSystem: IMS number does not exist')
+            return
+
+        print(df.loc[df['IMS_num'] == int(num)])
+
+    def data_add(self, num, date, title):
+        if num == '':
+            print('\nSystem: Empty input')
+            return
+
         df = pd.read_csv('./data_list.csv', index_col=0)
         
         # check if IMS num alread exists
@@ -30,9 +47,9 @@ class DataControl:
 
         # execute addition
         data = {"IMS_num" : num,
-                "Title" : title,
                 "Date" : date,
-                "Update_check" : 'N'}
+                "Title" : title
+        }
         df = df.append(data, ignore_index=True)
         df.to_csv('./data_list.csv')
         print('\nSystem: Data successfully added')
@@ -53,3 +70,7 @@ class DataControl:
         df.drop(index_names, inplace=True)
         df.to_csv('./data_list.csv')
         print('\nSystem: Data successfully deleted')
+    
+    def data_update(self):
+        df[column_name].replace([old_value], new_value)
+        

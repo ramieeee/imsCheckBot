@@ -8,21 +8,23 @@ def main():
     ims_check_bot.log_in()
 
     while True:                ### must code input_timeout
-        mod = input("""which mode?
+        mod = input("""\nwhich mode?
 ----------------------------
-> Check current IMS-s  :   \'c\'
-> Check updated IMS-s  :   \'u\'
-> Add IMS              :   \'a\'
-> Remove IMS           :   \'r\'
-> Exit                 :   \'e\'
+> \'S\' : Show all registered IMS-s
+> \'s\' : Show single registered IMS
+> \'u\' : Check updated IMS-s
+> \'a\' : Add IMS            
+> \'r\' : Remove IMS         
+> \'e\' : Exit               
 ----------------------------
-=> """)
+=> """).strip()
 
-        if mod == 'c':
-            data_control.data_disp()
+        if mod == 'S':
+            data_control.data_disp_all()
 
         elif mod == 's':
-            ims_check_bot.log_in()
+            num = input('IMS number: ')
+            data_control.data_disp_single(num)
 
         elif mod == 'e':
             print("\nSystem: Exiting the program")
@@ -30,11 +32,11 @@ def main():
 
         elif mod == 'a':
             num = input('IMS number: ')
-            ims_num, ims_title, ims_date = ims_check_bot.get_ims_info(num)
+            ims_num, ims_date, ims_title  = ims_check_bot.get_ims_info(num)
             if ims_num == 0:
                 continue
             else:
-                data_control.data_add(ims_num, ims_title, ims_date)
+                data_control.data_add(ims_num, ims_date, ims_title)
     
         elif mod == 'r':
             num = input('IMS number: ')

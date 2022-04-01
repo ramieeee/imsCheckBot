@@ -1,11 +1,10 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.keys import Keys
+# from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 import time
 import random
 import getpass
-import requests
 
 class IMSCheckBot:
     def __init__(self):
@@ -82,7 +81,7 @@ class IMSCheckBot:
             ims_date_path = '/html/body/div[2]/table/tbody/tr/td[2]/table/tbody/tr[2]/td/table[3]/tbody/tr/td/table/tbody/tr[2]/td/table/tbody/tr/td[2]/table/tbody/tr/td/table[2]/tbody/tr/td[1]/table/tbody/tr[20]/td[2]'
 
             ims_date = self.driver.find_element(by=By.XPATH, value=ims_date_path).text.strip()
-            return int(num), ims_title, ims_date
+            return int(num), ims_date, ims_title
 
         except:
             pass
