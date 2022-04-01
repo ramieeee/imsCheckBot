@@ -99,10 +99,12 @@ class IMSCheckBot:
 
         temp = []
         for i in com_list:
-            temp.append(i.get_text().strip().replace('\t','').replace('\n','').replace('\xa0',''))
-        print(temp)
+            single_index = i.get_text().strip().replace('\t','').replace('\n','').replace('\xa0','')
+            if len(list(single_index)) != 0:
+                temp.append(single_index)
         
+        print(temp)
 
 ims_check_bot = IMSCheckBot()
 ims_check_bot.log_in()
-ims_check_bot.get_info_test(231526)
+ims_check_bot.get_ims_info(279773)
