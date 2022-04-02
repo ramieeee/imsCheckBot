@@ -8,7 +8,8 @@ class DataControl:
             print('\nSystem: No data_list.csv file in dir. Creating new file')
             data = {'IMS_num' : [],
                     'Date' : [],
-                    'Title' : []
+                    'About' : [],
+                    'Comment' : []
             }
             df = pd.DataFrame(data)
             df.to_csv('./data_list.csv')
@@ -33,7 +34,7 @@ class DataControl:
 
         print(df.loc[df['IMS_num'] == int(num)])
 
-    def data_add(self, num, date, title):
+    def data_add(self, num, date, about, comment):
         if num == '':
             print('\nSystem: Empty input')
             return
@@ -48,7 +49,8 @@ class DataControl:
         # execute addition
         data = {"IMS_num" : num,
                 "Date" : date,
-                "Title" : title
+                "About" : about,
+                "Comment" : comment
         }
         df = df.append(data, ignore_index=True)
         

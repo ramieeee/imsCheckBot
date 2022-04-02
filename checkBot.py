@@ -95,15 +95,36 @@ class IMSCheckBot:
         self.driver.get(url)
         html = self.driver.page_source
         soup = BeautifulSoup(html, 'html.parser')
-        com_list = soup.find_all('span', {'class': 'link2'})
 
-        temp = []
-        for i in com_list:
-            single_index = i.get_text().strip().replace('\t','').replace('\n','').replace('\xa0','')
-            if len(list(single_index)) != 0:
-                temp.append(single_index)
+        # date parsing
+        date_list = soup.find_all('span', {'class': 'link2'})
+
+        date_temp = []
+        for i in date_list:
+            date_single_index = i.get_text().strip().replace('\t','').replace('\n','').replace('\xa0','')
+            if len(list(date_single_index)) != 0:
+                date_temp.append(date_single_index)
+
+        # check if action exists
+        if len(date_temp) == 1:
+            return 0
         
-        print(temp)
+        date_index = date_temp[1].find('Registered date') + 18 # registered date index
+        ims_date = date_temp[1][date_index:date_index+19]
+
+        # comment parsing
+        comment_list = soup.find_all('div', {'class': 'commDescTR data'})
+
+        comment_temp = []
+        for i in comment_list:
+            comment_single_index = i.get_text().strip().replace('\t','').replace('\n','').replace('\xa0','')
+            if len(list(comment_single_index)) != 0:
+                comment_temp.append(comment_single_index)
+        ims_comment = comment_temp[0]
+
+        return ims_date, ims_comment
+    
+    
 
 ims_check_bot = IMSCheckBot()
 ims_check_bot.log_in()

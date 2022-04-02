@@ -32,11 +32,13 @@ def main():
 
         elif mod == 'a':
             num = input('IMS number: ')
-            ims_num, ims_date, ims_title  = ims_check_bot.get_ims_info(num)
+            ims_date = ims_check_bot.get_ims_date(num)
+            ims_about = input('What is it about? : ')
+            
             if ims_num == 0:
                 continue
             else:
-                data_control.data_add(ims_num, ims_date, ims_title)
+                data_control.data_add(ims_num, ims_date, ims_about)
     
         elif mod == 'r':
             num = input('IMS number: ')
