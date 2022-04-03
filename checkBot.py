@@ -68,6 +68,7 @@ class IMSCheckBot:
     def get_details(self, num):
         url = f'https://ims.tmaxsoft.com/tody/ims/issue/issueView.do?issueId={num}'
         self.driver.get(url)
+        time.sleep(1)
         html = self.driver.page_source
         soup = BeautifulSoup(html, 'html.parser')
 
@@ -82,7 +83,7 @@ class IMSCheckBot:
         if len(body_temp[0]) == 17:
             return 0, 0
         
-        details_body = body_temp[0][17:]        
+        details_body = body_temp[0][17:]
         details_date = time.strftime('%Y/%m/%d %X')
 
         return details_date, details_body
@@ -90,6 +91,7 @@ class IMSCheckBot:
     def get_ims_info(self, num):
         url = f'https://ims.tmaxsoft.com/tody/ims/issue/issueView.do?issueId={num}'
         self.driver.get(url)
+        time.sleep(1)
         html = self.driver.page_source
         soup = BeautifulSoup(html, 'html.parser')
 

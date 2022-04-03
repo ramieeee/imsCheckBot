@@ -41,7 +41,9 @@ You need to login with your IMS account of TMAXSoft""")
                 print('\nSystem: Input value invalid')
 
         elif mod == 'u':
+            print('Please wait for a while. It may take few mins')
             data_list = data_control.data_to_list()
+            cnt = 0
             for num in data_list:
                 ims_date, ims_comment = ims_check_bot.get_ims_info(num)
             
@@ -50,6 +52,8 @@ You need to login with your IMS account of TMAXSoft""")
                     print(f'> Update date: {ims_date}')
                     print(f'> Comment: {ims_comment}')
                     data_control.data_switch(num, ims_date, ims_comment)
+                    cnt += 1
+            print(f'System: Total {cnt} updates')
 
         elif mod == 'a':
             num = input('IMS number: ')
@@ -62,14 +66,16 @@ You need to login with your IMS account of TMAXSoft""")
             if details_date == 0:
                 print(f'\nSystem: IMS num {num} may not exist. Try again')
                 continue
-            details_about = input('What is it about?(short memo) : ')
-
+            
             # execute addition
-            data_control.data_add(num, details_date, details_about, details_body)
+            data_control.data_add(num, details_date, details_body)
             print('System: new IMS added with current date & time')
 
         elif mod == 'r':
             num = input('IMS number: ')
+            if num == '':
+                print('\nSystem: Empty number input')
+                continue
             try:
                 data_control.data_del(num)
             except ValueError:

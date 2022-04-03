@@ -4,6 +4,20 @@ import os
 class DataControl:
     def __init__(self):
         # check if data_list.csv exists in the current dir
+        self.check_csv_file()
+        # if 'data_list.csv' not in os.listdir('./'):
+        #     print('\nSystem: No data_list.csv file in dir. Creating new file')
+        #     data = {'IMS_num' : [],
+        #             'Date' : [],
+        #             'About' : [],
+        #             'Comment' : []
+        #     }
+        #     df = pd.DataFrame(data)
+        #     df.to_csv('./data_list.csv')
+        #     print('\nSystem: Successfully created data_list.csv')
+    
+    def check_csv_file(self):
+        # check if data_list.csv exists in the current dir
         if 'data_list.csv' not in os.listdir('./'):
             print('\nSystem: No data_list.csv file in dir. Creating new file')
             data = {'IMS_num' : [],
@@ -13,9 +27,10 @@ class DataControl:
             }
             df = pd.DataFrame(data)
             df.to_csv('./data_list.csv')
-            print('\nSystem: Successfully created data_list.csv')
-    
+            print('System: Successfully created data_list.csv')
+
     def data_disp_all(self):
+        self.check_csv_file()
         df = pd.read_csv('./data_list.csv', index_col=0) # index_col eliminates unnamed: 0 column
         print()
         print(df)
@@ -25,6 +40,7 @@ class DataControl:
             print('\nSystem: Empty input')
             return
 
+        self.check_csv_file()
         df = pd.read_csv('./data_list.csv', index_col=0)
 
         # check if IMS num exists
@@ -34,17 +50,16 @@ class DataControl:
 
         print(df.loc[df['IMS_num'] == int(num)])
 
-    def data_add(self, num, date, about, comment):
-        if num == '':
-            print('\nSystem: Empty input')
-            return
-
+    def data_add(self, num, date, comment): # **duplicate addition needs fixing !!!!!!!!!!
+        self.check_csv_file()
         df = pd.read_csv('./data_list.csv', index_col=0)
         
         # check if IMS num alread exists
-        if num in list(df['IMS_num']):
+        if int(num) in list(df['IMS_num']):
             print('\nSystem: IMS number already exists')
             return
+
+        about = input('What is it about?(short memo) : ')
 
         # execute addition
         data = {"IMS_num" : num,
@@ -58,9 +73,7 @@ class DataControl:
         print('\nSystem: Data successfully added')
     
     def data_del(self, num):
-        if num == '':
-            print('\nSystem: Empty input')
-            return
+        self.check_csv_file()
         df = pd.read_csv('./data_list.csv', index_col=0)
 
         # check if IMS num exists
@@ -75,10 +88,12 @@ class DataControl:
         print('\nSystem: Data successfully deleted')
     
     def data_to_list(self):
+        self.check_csv_file()
         df = pd.read_csv('./data_list.csv', index_col=0)
         return list(df["IMS_num"])
 
     def data_date_check(self, num):
+        self.check_csv_file()
         df = pd.read_csv('./data_list.csv', index_col=0)
 
         index = df.query(f'IMS_num == {num}').index.tolist()
@@ -89,6 +104,7 @@ class DataControl:
         return current_date
     
     def data_switch(self, num, date_to, comment_to):
+        self.check_csv_file()
         df = pd.read_csv('./data_list.csv', index_col=0)
 
         index = df.query(f'IMS_num == {num}').index.tolist()
