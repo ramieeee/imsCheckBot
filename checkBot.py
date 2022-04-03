@@ -17,7 +17,7 @@ class IMSCheckBot:
         self.options.add_argument("--window-size=1024,768")
         self.driver = webdriver.Chrome(executable_path="./chromedriver.exe", options=self.options)
         self.url = "https://ims.tmaxsoft.com/"
-        self.driver.get(self.url)
+        # self.driver.get(self.url)
         self.header = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36'}
         time.sleep(3)
     
@@ -25,6 +25,7 @@ class IMSCheckBot:
         return random.randint(1, 3) / 10
         
     def log_in(self):
+        self.driver.get(self.url)
         # login id, pw input field Xpath
         id = input('id: ')
         pw = getpass.getpass('pw: ')
@@ -54,41 +55,16 @@ class IMSCheckBot:
 
         login_button.click()
 
-    # def get_ims_info(self, num):
-    #     url = f'https://ims.tmaxsoft.com/tody/ims/issue/issueView.do?issueId={num}'
+    def login_check(self):
+        try:
+            login_error_path = '/html/body/form/table/tbody/tr/td/table/tbody/tr[2]/td[1]/table/tbody/tr/td[2]/table/tbody/tr/td[2]/table/tbody/tr[2]/td'
+            login_error = self.driver.find_element(By.XPATH, value=login_error_path).text
+        
+            if login_error == '* User password miss matched':
+                return 0
+        except:
+            return 1
 
-    #     # check HTTP status
-    #     # html = requests.get(url, headers=self.header)
-    #     # print(f'*********{html.status_code}********')
-
-    #     # if html.status_code != 200:
-    #     #     print(f'Page error. Error code {html.status_code}')
-    #     #     return
-    #     self.driver.get(url)
-    #     time.sleep(2)
-
-    #     try:
-    #         error_check_path = '/html/body/table/tbody/tr/td/table/tbody/tr[2]/td/table/tbody/tr/td[2]/pre/span'
-    #         if self.driver.find_element(by=By.XPATH, value=error_check_path).text:
-    #             print('\nSystem: Invalid IMS number')
-    #             return 0, 0, 0
-    #     except:
-    #         pass
-
-    #     try:
-    #     # ims_title
-    #         ims_title_path = '/html/body/div[2]/table/tbody/tr/td[2]/table/tbody/tr[2]/td/table[2]/tbody/tr/td/table/tbody/tr/td[2]'
-    #         ims_title = self.driver.find_element(by=By.XPATH, value=ims_title_path).text.strip()
-
-    #     # date check
-    #         ims_date_path = '/html/body/div[2]/table/tbody/tr/td[2]/table/tbody/tr[2]/td/table[3]/tbody/tr/td/table/tbody/tr[2]/td/table/tbody/tr/td[2]/table/tbody/tr/td/table[2]/tbody/tr/td[1]/table/tbody/tr[20]/td[2]'
-
-    #         ims_date = self.driver.find_element(by=By.XPATH, value=ims_date_path).text.strip()
-    #         return int(num), ims_date, ims_title
-
-    #     except:
-    #         pass
-    
     def get_details(self, num):
         url = f'https://ims.tmaxsoft.com/tody/ims/issue/issueView.do?issueId={num}'
         self.driver.get(url)

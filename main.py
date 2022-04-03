@@ -4,15 +4,21 @@ import checkBot
 
 def main():
     version = '1.0v'
-    print(f"""**Welcome to IMS Check Bot {version}**
+    print(f"""**Welcome to IMS Comment Check Bot {version}**
 You need to login with your IMS account of TMAXSoft""")
 
     data_control = dataProcess.DataControl()
     ims_check_bot = checkBot.IMSCheckBot()
-    ims_check_bot.log_in()
+    while True:
+        ims_check_bot.log_in()
+        if ims_check_bot.login_check() == 1:
+            print('\nSystem: Login successful')
+            break
+        else:
+            print('\nSystem: ID or PW may not be right. Try again')
 
     while True:                ### must code input_timeout
-        mod = input("""\nwhich mode?
+        mod = input("""\nSelect the mode
 ----------------------------
 > \'S\' : Show all registered IMS-s
 > \'s\' : Show single registered IMS
