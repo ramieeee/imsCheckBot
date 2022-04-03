@@ -5,9 +5,8 @@ from selenium.webdriver.common.by import By
 import time
 import random
 import getpass
-
 from bs4 import BeautifulSoup
-
+import time
 
 
 class IMSCheckBot:
@@ -90,6 +89,28 @@ class IMSCheckBot:
     #     except:
     #         pass
     
+    def get_details(self, num):
+        url = f'https://ims.tmaxsoft.com/tody/ims/issue/issueView.do?issueId={num}'
+        self.driver.get(url)
+        html = self.driver.page_source
+        soup = BeautifulSoup(html, 'html.parser')
+
+        body_list = soup.find_all('div', {'id': 'IssueDescriptionDiv'})
+        body_temp = []
+        for i in body_list:
+            body_single_index = i.get_text().strip().replace('\t','').replace('\n','').replace('\xa0','')
+            if len(list(body_single_index)) != 0:
+                body_temp.append(body_single_index)
+        if len(body_temp) == 0:
+            return 0, 0
+        if len(body_temp[0]) == 17:
+            return 0, 0
+        
+        details_body = body_temp[0][17:]        
+        details_date = time.strftime('%Y/%m/%d %X')
+
+        return details_date, details_body
+
     def get_ims_info(self, num):
         url = f'https://ims.tmaxsoft.com/tody/ims/issue/issueView.do?issueId={num}'
         self.driver.get(url)
@@ -107,7 +128,7 @@ class IMSCheckBot:
 
         # check if action exists
         if len(date_temp) == 1:
-            return 0
+            return 0, 0
         
         date_index = date_temp[1].find('Registered date') + 18 # registered date index
         ims_date = date_temp[1][date_index:date_index+19]
@@ -123,9 +144,3 @@ class IMSCheckBot:
         ims_comment = comment_temp[0]
 
         return ims_date, ims_comment
-    
-    
-
-ims_check_bot = IMSCheckBot()
-ims_check_bot.log_in()
-ims_check_bot.get_ims_info(279773)

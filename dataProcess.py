@@ -74,6 +74,29 @@ class DataControl:
         df.to_csv('./data_list.csv')
         print('\nSystem: Data successfully deleted')
     
-    def data_update(self):
-        df[column_name].replace([old_value], new_value)
-        
+    def data_to_list(self):
+        df = pd.read_csv('./data_list.csv', index_col=0)
+        return list(df["IMS_num"])
+
+    def data_date_check(self, num):
+        df = pd.read_csv('./data_list.csv', index_col=0)
+
+        index = df.query(f'IMS_num == {num}').index.tolist()
+        temp = df.loc[index, ['Date']]
+        temp = temp['Date'].tolist()
+        current_date = temp[0]
+
+        return current_date
+    
+    def data_switch(self, num, date_to, comment_to):
+        df = pd.read_csv('./data_list.csv', index_col=0)
+
+        index = df.query(f'IMS_num == {num}').index.tolist()
+        data_index = index[0]
+
+        # date switch
+        df.loc[data_index, ['Date']] = date_to
+        # comment switch
+        df.loc[data_index, ['Comment']] = comment_to
+
+        df.to_csv('./data_list.csv')

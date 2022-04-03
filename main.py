@@ -3,6 +3,10 @@ import dataProcess
 import checkBot
 
 def main():
+    version = '1.0v'
+    print(f"""**Welcome to IMS Check Bot {version}**
+You need to login with your IMS account of TMAXSoft""")
+
     data_control = dataProcess.DataControl()
     ims_check_bot = checkBot.IMSCheckBot()
     ims_check_bot.log_in()
@@ -15,6 +19,7 @@ def main():
 > \'u\' : Check updated IMS-s
 > \'a\' : Add IMS            
 > \'r\' : Remove IMS         
+> \'v\' : Check version of IMS_check_bot
 > \'e\' : Exit               
 ----------------------------
 => """).strip()
@@ -24,25 +29,52 @@ def main():
 
         elif mod == 's':
             num = input('IMS number: ')
-            data_control.data_disp_single(num)
+            try:
+                data_control.data_disp_single(num)
+            except ValueError:
+                print('\nSystem: Input value invalid')
+
+        elif mod == 'u':
+            data_list = data_control.data_to_list()
+            for num in data_list:
+                ims_date, ims_comment = ims_check_bot.get_ims_info(num)
+            
+                if ims_date != data_control.data_date_check(num):
+                    print(f'> {num} with updated comment')
+                    print(f'> Update date: {ims_date}')
+                    print(f'> Comment: {ims_comment}')
+                    data_control.data_switch(num, ims_date, ims_comment)
+
+        elif mod == 'a':
+            num = input('IMS number: ')
+            if num == '':
+                print('\nSystem: Empty number input')
+                continue
+
+            # get current IMS date and details
+            details_date, details_body = ims_check_bot.get_details(num)
+            if details_date == 0:
+                print(f'\nSystem: IMS num {num} may not exist. Try again')
+                continue
+            details_about = input('What is it about?(short memo) : ')
+
+            # execute addition
+            data_control.data_add(num, details_date, details_about, details_body)
+            print('System: new IMS added with current date & time')
+
+        elif mod == 'r':
+            num = input('IMS number: ')
+            try:
+                data_control.data_del(num)
+            except ValueError:
+                print('\nSystem: Input value invalid')
+        
+        elif mod == 'v':
+            print(f'\n IMS Check Bot with version {version}')
 
         elif mod == 'e':
             print("\nSystem: Exiting the program")
             break
-
-        elif mod == 'a':
-            num = input('IMS number: ')
-            ims_date = ims_check_bot.get_ims_date(num)
-            ims_about = input('What is it about? : ')
-            
-            if ims_num == 0:
-                continue
-            else:
-                data_control.data_add(ims_num, ims_date, ims_about)
-    
-        elif mod == 'r':
-            num = input('IMS number: ')
-            data_control.data_del(num)
         
         else:
             print('\nSystem: No valid input. Try again.')
