@@ -3,18 +3,7 @@ import os
 
 class DataControl:
     def __init__(self):
-        # check if data_list.csv exists in the current dir
         self.check_csv_file()
-        # if 'data_list.csv' not in os.listdir('./'):
-        #     print('\nSystem: No data_list.csv file in dir. Creating new file')
-        #     data = {'IMS_num' : [],
-        #             'Date' : [],
-        #             'About' : [],
-        #             'Comment' : []
-        #     }
-        #     df = pd.DataFrame(data)
-        #     df.to_csv('./data_list.csv')
-        #     print('\nSystem: Successfully created data_list.csv')
     
     def check_csv_file(self):
         # check if data_list.csv exists in the current dir

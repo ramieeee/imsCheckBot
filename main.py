@@ -10,8 +10,13 @@ You need to login with your IMS account of TMAXSoft""")
     data_control = dataProcess.DataControl()
     ims_check_bot = checkBot.IMSCheckBot()
     while True:
-        ims_check_bot.log_in()
-        if ims_check_bot.login_check() == 1:
+        flag = ims_check_bot.log_in()
+
+        # check empty field in id or pw
+        if flag == 0:
+            continue
+
+        elif ims_check_bot.login_check() == 1:
             print('\nSystem: Login successful')
             break
         else:

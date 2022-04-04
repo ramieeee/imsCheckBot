@@ -29,6 +29,9 @@ class IMSCheckBot:
         # login id, pw input field Xpath
         id = input('id: ')
         pw = getpass.getpass('pw: ')
+        if id == '' or pw == '':
+            print('ID or PW empty. Try again')
+            return 0
 
         id_path = '/html/body/form/table/tbody/tr/td/table/tbody/tr[2]/td[1]/table/tbody/tr/td[2]/table/tbody/tr/td[2]/table/tbody/tr/td[1]/input'
         pw_path = '/html/body/form/table/tbody/tr/td/table/tbody/tr[2]/td[1]/table/tbody/tr/td[2]/table/tbody/tr/td[2]/table/tbody/tr/td[2]/input'
@@ -55,12 +58,20 @@ class IMSCheckBot:
 
         login_button.click()
 
+        # try:
+        #     da = Alert(self.driver)
+        #     print('alert:', da.text)
+        # except:
+        #     pass
+
+
     def login_check(self):
         try:
             login_error_path = '/html/body/form/table/tbody/tr/td/table/tbody/tr[2]/td[1]/table/tbody/tr/td[2]/table/tbody/tr/td[2]/table/tbody/tr[2]/td'
             login_error = self.driver.find_element(By.XPATH, value=login_error_path).text
         
-            if login_error == '* User password miss matched':
+            # if login_error == '* User password miss matched' or 'invalid' in login_error:
+            if 'miss matched' in login_error or 'invalid' in login_error:
                 return 0
         except:
             return 1
