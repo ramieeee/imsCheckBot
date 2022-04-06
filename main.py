@@ -3,7 +3,7 @@ import dataProcess
 import checkBot
 
 def main():
-    version = '1.0v'
+    version = '1.1v'
     print(f"""**Welcome to IMS Comment Check Bot {version}**
 You need to login with your IMS account of TMAXSoft""")
 
@@ -54,8 +54,9 @@ You need to login with your IMS account of TMAXSoft""")
             
                 if ims_date != data_control.data_date_check(num):
                     print(f'> {num} with updated comment')
+                    print(f'> About: ')
                     print(f'> Update date: {ims_date}')
-                    print(f'> Comment: {ims_comment}')
+                    print(f'> Comment: {ims_comment}\n')
                     data_control.data_switch(num, ims_date, ims_comment)
                     cnt += 1
             print(f'System: Total {cnt} updates')
