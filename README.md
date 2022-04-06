@@ -1,7 +1,7 @@
 Parsing bot for checking IMS issues based on TMAX IMS.
 
 How to use the program
-1. Download IMS_Check_Bot_1.0v.tar
+1. Download IMS_Check_Bot_1.1v.tar
 2. Execute main.exe
 3. Follow instruction on console
 
