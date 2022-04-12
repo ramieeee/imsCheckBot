@@ -91,6 +91,14 @@ class DataControl:
         current_date = temp[0]
 
         return current_date
+
+    def get_data_about(self, num):
+        self.check_csv_file()
+        df = pd.read_csv('./data_list.csv', index_col=0)
+
+        index = df.query(f'IMS_num == {num}').index.tolist()
+        data_index = index[0]
+        return df.loc[data_index, 'About']
     
     def data_switch(self, num, date_to, comment_to):
         self.check_csv_file()
