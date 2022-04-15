@@ -1,8 +1,8 @@
 Parsing bot for checking IMS issues based on TMAX IMS.
 
 How to use the program
-1. Run main.py with "python main.py"
-2. Execute main.exe
+1. Git clone main.py, checkBot.py, dataProcess.py
+2. Run main.py with "python main.py"
 3. Follow instruction on console
 
 *note
