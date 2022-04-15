@@ -22,7 +22,25 @@ class DataControl:
         self.check_csv_file()
         df = pd.read_csv('./data_list.csv', index_col=0) # index_col eliminates unnamed: 0 column
         print()
-        print(df)
+
+        ret = []
+        comment_ret = []
+        for i in df['IMS_num']:
+            index = df.query(f'IMS_num == {i}').index.tolist()
+
+            ret_index = str(index[0])
+            ims_num = str(list(df.loc[index, 'IMS_num'])[0])
+            date = df.loc[index, 'Date']
+            about = df.loc[index, 'About']
+            comment = str(df.loc[index, 'Comment'])
+            comment = str(comment[:len(comment)//2] + '...')
+            article = list(ret_index + " | " + ims_num + " | " + date + " | " + about)
+            ret.append(article)
+            comment_ret.append(comment)
+
+        for i in range(len(ret)):
+            print(ret[i][0])
+            print(comment_ret[i][4:].strip()+'\n')
     
     def data_disp_single(self, num):
         if num == '':
@@ -36,8 +54,18 @@ class DataControl:
         if int(num) not in list(df['IMS_num']):
             print('\nSystem: IMS number does not exist')
             return
+        
+        index = df.query(f'IMS_num == {num}').index.tolist()
+        index = index[0]
 
-        print(df.loc[df['IMS_num'] == int(num)])
+        about = df.loc[index, 'About']
+        ims_date = df.loc[index, 'Date']
+        ims_comment = str(df.loc[index, 'Comment'])
+
+        print(f'> IMS num: {num}')
+        print(f'> About: {about}')
+        print(f'> Update date: {ims_date}')
+        print(f'> Comment: {ims_comment}\n')
 
     def data_add(self, num, date, comment): # **duplicate addition needs fixing !!!!!!!!!!
         self.check_csv_file()

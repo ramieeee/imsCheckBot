@@ -3,7 +3,7 @@ import dataProcess
 import checkBot
 
 def main():
-    version = '1.2v'
+    version = '1.3v'
     print(f"""**Welcome to IMS Comment Check Bot {version}**
 You need to login with your IMS account of TMAXSoft""")
 
